@@ -1,0 +1,26 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    display: block;
+    align-items:center ;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    text-align: center;
+}
+
+.calculator__keys { 
+    display: grid; 
+  }
+
+  .calculator__display{
+    display: grid;
+    color:white;
+    background-color:black;
+  }
+
+  .calculator__keys{
+    display: grid;
+    color:white;
+    background-color:black;
+  }
