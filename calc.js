@@ -1,18 +1,22 @@
 const calc = document.querySelector('.calculator');
-const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
 const display = document.querySelector('.calculator__display'); //result
+const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
 var total = 0.0;
 var string_total = total.toString(); 
-const previousKeyType = calc.dataset.previousKeyType;
+
+
 
 //DISPLAYING KEYPRESSES/RESULTS
    keys.addEventListener('click', e => {
     if (e.target.matches('button')) {
-      const key = e.target //gets the key inputted and saves it
-      const action = key.dataset.action //gets the action associated with the key press i.e add, sub, div, multiply
-      const keyContent = key.textContent //saves the key content (used for calcs)
-      const displayedNum = display.textContent //used for displaying key press on calc
 
+    
+      const key = e.target//gets the key inputted and saves it
+      const action = key.dataset.action//gets the action associated with the key press i.e add, sub, div, multiply
+      const keyContent = key.textContent//saves the key content (used for calcs)
+      const displayedNum = display.textContent //used for displaying key press on calc
+      const previousKeyType = calc.dataset.previousKeyType
+      
         if (
           action === 'add' ||
           action === 'subtract' ||
@@ -82,7 +86,9 @@ const previousKeyType = calc.dataset.previousKeyType;
           }
        }
 
-} });
+    }
+
+ });
 
   
  keys.addEventListener('click',e => {
