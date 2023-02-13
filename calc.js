@@ -1,50 +1,88 @@
 const calc = document.querySelector('.calculator');
-const keys = document.querySelector('.calculator__keys');
-const display = document.querySelector('.calculator__display');
+const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
+const display = document.querySelector('.calculator__display'); //result
 var total = 0.0;
-var string_total = total.toString();
-  
-keys.addEventListener('click', e => {
-    const key = e.target
-    const action = key.dataset.action
-    const keyContent = e.target.textContent
-    const displayedNum = display.textContent
-   // var temp1,temp2;
+var string_total = total.toString(); 
+const previousKeyType = calc.dataset.previousKeyType;
 
+//DISPLAYING KEYPRESSES/RESULTS
    keys.addEventListener('click', e => {
     if (e.target.matches('button')) {
-      const key = e.target
-      const action = key.dataset.action
-      const keyContent = key.textContent
-      const displayedNum = display.textContent
+      const key = e.target //gets the key inputted and saves it
+      const action = key.dataset.action //gets the action associated with the key press i.e add, sub, div, multiply
+      const keyContent = key.textContent //saves the key content (used for calcs)
+      const displayedNum = display.textContent //used for displaying key press on calc
     }
 
-    if(!action){
-        if (displayedNum === '0') {
-            display.textContent = keyContent
+    if(!action){ //Filters out the operators, so we only have the numbers. True = not False = Not Action i.e. its a Number
+        if (displayedNum === '0' || previousKeyType === 'operator') { 
+            displayedNum = keyContent //Makes the display say content of the key pressed if the key was 0.
           } else {
-            display.textContent = displayedNum + keyContent //concatantes the string to display nums w/ more than 1 digit
+            displayedNum = displayedNum + keyContent //concatanates the string to display nums w/ more than 1 digit
           }
        }
-    
-  })
 
-  
+    if(action == 'decimal') {
+        displayedNum = displayedNum + "."
+    }
+})
+
+  //CALCULATION LOGIC
+
+    keys.addEventListener('click', e => {
+        if(e.target.matches('button')) {
+            var num1 = e.target; 
 
 
-    if(e.target.matches('button')) {
-         if(!action) {
-            console.log('Number Pressed');
-
-            if(action == "1" | action == "2" ){
-                console.log('success');
+            // if(!action) { //if number
+            //         num1 = num1  //concatanates the string to display nums w/ more than 1 digit
+            //    }
+        
+            // if(action == 'decimal') {
+            //     num1 = num1 + "."
+            // }
+            if (
+                action === 'add' ||
+                action === 'subtract' ||
+                action === 'multiply' ||
+                action === 'divide'
+              ) {
+                key.classList.add('is-depressed') //tells us when an operator has been pressed down
+                calc.dataset.previousKeyType = 'operator';
             }
 
-        } else {
             
-                if(action == 'add'|| action =='subtract' || action == 'multiply' || action == 'divide' || action == 'calculate'){
-                    console.log('Operator Pressed');
+            } else { //if operator
+            
+                if(action == 'add'){
+                    const firstValue = calc.dataset.firstValue;
+                    const secondValue = displayedNum;
+                     add(firstValue, displayedNum);
+
                 } 
+
+                else if(action =='subtract'){
+                    const firstValue = calc.dataset.firstValue;
+                    const secondValue = displayedNum;
+                     sub(firstValue, displayedNum);
+                    
+
+                }
+                else if(action == 'multiply'){
+                    const firstValue = calc.dataset.firstValue;
+                    const secondValue = displayedNum;
+                    multiply(firstValue, displayedNum);
+                }
+                else if(action == 'divide'){
+                    const firstValue = calc.dataset.firstValue;
+                    const secondValue = displayedNum;
+                    divide(firstValue, displayedNum);
+                }
+                else if(action == 'calculate'){
+                    equal();
+
+                }
+
                 else if(action =='decimal'){
                     display.textContent = displayedNum + '.'
 
@@ -55,7 +93,6 @@ keys.addEventListener('click', e => {
                     total = 0;
                     return updateTotal();
                     
-                    
                 }
                 else {
                     console.log('Button not valid');
@@ -64,10 +101,20 @@ keys.addEventListener('click', e => {
 
     }
 
-});
+);
 
-// string_total = total.toString();
-// document.querySelector('.calculator').innerText = string_total;
+
+ keys.addEventListener('click',e => {
+    if(e.target.matches('button')) {
+        const key = e.target
+
+        Array.from(key.parentNode.children) //removes pressed keys
+        .forEach(k => k.classList.remove('is-depressed'))
+    }
+ });
+
+
+// Functions
 
 function add(num1, num2) {
     total = num1 + num2;
