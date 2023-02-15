@@ -1,10 +1,8 @@
-const calc = document.querySelector('.calculator');
+const calculator = document.querySelector('.calculator');
 const display = document.querySelector('.calculator__display'); //result
 const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
 var total = 0.0;
 var string_total = total.toString(); 
-
-
 
 //DISPLAYING KEYPRESSES/RESULTS
    keys.addEventListener('click', e => {
@@ -14,8 +12,8 @@ var string_total = total.toString();
       const key = e.target//gets the key inputted and saves it
       const action = key.dataset.action//gets the action associated with the key press i.e add, sub, div, multiply
       const keyContent = key.textContent//saves the key content (used for calcs)
-      const displayedNum = display.textContent //used for displaying key press on calc
-      const previousKeyType = calc.dataset.previousKeyType
+      const displayedNum = display.textContent; //used for displaying key press on calc
+      const previousKeyType = calculator.dataset.previousKeyType //Gets the previous key type
       
         if (
           action === 'add' ||
@@ -24,71 +22,33 @@ var string_total = total.toString();
           action === 'divide'
          ) {
           key.classList.add('is-depressed') //tells us when an operator has been pressed down
-          calc.dataset.previousKeyType = 'operator';
+          calculator.dataset.previousKeyType = 'operator';
+        }
+
+        else if(!action) {
+            return console.log('number');
         }
 
         else if(action == 'decimal') {
             displayedNum = displayedNum + "."
         }
-    
-        else { 
-    
-         if(action == 'add'){
-            const firstValue = calc.dataset.firstValue;
-            const secondValue = displayedNum;
-             add(firstValue, displayedNum);
 
-         } 
-
-        else if(action =='subtract'){
-            const firstValue = calc.dataset.firstValue;
-            const secondValue = displayedNum;
-             sub(firstValue, displayedNum);
-            
-
-        }
-        else if(action == 'multiply'){
-            const firstValue = calc.dataset.firstValue;
-            const secondValue = displayedNum;
-            multiply(firstValue, displayedNum);
-        }
-        else if(action == 'divide'){
-            const firstValue = calc.dataset.firstValue;
-            const secondValue = displayedNum;
-            divide(firstValue, displayedNum);
-        }
-        else if(action == 'calculate'){
-            equal();
-
-        }
-
-        else if(action =='decimal'){
-            display.textContent = displayedNum + '.'
-
-        }
-
-        else if(action =='clear'){
+        else if (action =='clear'){
             console.log('clear pressed');
-            total = 0;
-            return updateTotal();
-            
+            displayedNum = 0;
         }
+
+       if(operator == 'add' || operator == 'subtract' || operator == 'divide' || operator == 'multiply'){
+            calc(keyContent,displayedNum,operator);
+        }
+
         else {
             console.log('Button not valid');
         }
 }       
-
-    if(!action){ //Filters out the operators, so we only have the numbers. True = not False = Not Action i.e. its a Number
-        if (displayedNum === '0' || previousKeyType === 'operator') { 
-            displayedNum = keyContent //Makes the display say content of the key pressed if the key was 0.
-          } else {
-            displayedNum = displayedNum + keyContent //concatanates the string to display nums w/ more than 1 digit
-          }
-       }
-
     }
 
- });
+ );
 
   
  keys.addEventListener('click',e => {
@@ -103,41 +63,32 @@ var string_total = total.toString();
 
 // Functions
 
-function add(num1, num2) {
-    total = num1 + num2;
-    updateTotal();
-    return total;
+function calc(num1,num2, operator) {
 
+    const firstNumber = parseFloat(num1);
+    const secondNumber =  parseFloat(num2);
+
+    if (operator === 'add'){
+        return firstNumber + secondNumber;
+    }
+   
+   else if (operator === 'subtract'){
+        return firstNumber - secondNumber;
+    }
+
+    else if (operator === 'multiply'){
+        return firstNumber * secondNumber;
+
+    }
+    else if (operator === 'divide'){
+        return firstNumber / secondNumber;
+
+    }
+
+    else {
+        console.log('error: unknown operator ' + operator);
+    }
 }
 
-function sub(num1,num2) {
-    total = num1 - num2;
-    updateTotal();
-    return total;
-    
-}
 
-function multiply(num1,num2){
-    total = num1 * num2;
-    updateTotal();
-    return total;
-
-}
-
-function divide(num1,num2) {
-    total = num1/num2;
-    updateTotal();
-    return total;
-    
-}
-
-function equal() {
-    updateTotal(total);
-    return string_total;
-    
-}
-
-function updateTotal() {
-    string_total = total.toString();
-    document.querySelector('.calculator').innerText = string_total;
-}
+//Getting Operator
