@@ -1,3 +1,10 @@
+
+//Loads page elements
+const calculator = document.querySelector('.calculator');
+const display = document.querySelector('.calculator__display'); //result
+const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
+
+
 //DISPLAYING KEYPRESSES/RESULTS
    keys.addEventListener('click', e => {
     if (e.target.matches('button')) {
@@ -174,8 +181,4 @@ function getKeyType(key){
 
 }
 
-//Loads page elements
 
-const calculator = document.querySelector('.calculator');
-const display = document.querySelector('.calculator__display'); //result
-const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
