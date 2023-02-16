@@ -1,27 +1,27 @@
 // NOTE: 
 // This is the final source code file for a blog post "How to build a calculator". You can follow the lesson at https://zellwk.com/blog/calculator-part-3
 
-// const calculate = (n1, operator, n2) => {
-//   const firstNum = parseFloat(n1)
-//   const secondNum = parseFloat(n2)
-//   if (operator === 'add') return firstNum + secondNum
-//   if (operator === 'subtract') return firstNum - secondNum
-//   if (operator === 'multiply') return firstNum * secondNum
-//   if (operator === 'divide') return firstNum / secondNum
-// }
+const calculate = (n1, operator, n2) => {
+  const firstNum = parseFloat(n1)
+  const secondNum = parseFloat(n2)
+  if (operator === 'add') return firstNum + secondNum
+  if (operator === 'subtract') return firstNum - secondNum
+  if (operator === 'multiply') return firstNum * secondNum
+  if (operator === 'divide') return firstNum / secondNum
+}
 
-// const getKeyType = key => {
-//   const { action } = key.dataset
-//   if (!action) return 'number'
-//   if (
-//     action === 'add' ||
-//     action === 'subtract' ||
-//     action === 'multiply' ||
-//     action === 'divide'
-//   ) return 'operator'
-//   // For everything else, return the action
-//   return action
-// }
+const getKeyType = key => {
+  const { action } = key.dataset
+  if (!action) return 'number'
+  if (
+    action === 'add' ||
+    action === 'subtract' ||
+    action === 'multiply' ||
+    action === 'divide'
+  ) return 'operator'
+  // For everything else, return the action
+  return action
+}
 
 const createResultString = (key, displayedNum, state) => {
   const keyContent = key.textContent

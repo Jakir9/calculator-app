@@ -16,7 +16,7 @@ const keys = document.querySelector('.calculator__keys'); //Part where the numbe
       const previousKeyType = calculator.dataset.previousKeyType //Gets the operator/number
       const keyType = getKeyType(key)
       resultString = createResultString(key, displayedNum, calculator.dataset);
-
+      display.textContent = resultString
       updateCalculatorState(key, calculator, resultString, displayedNum)
       updateVisualState(key, calculator)
 
