@@ -13,6 +13,7 @@ const keys = document.querySelector('.calculator__keys'); //Part where the numbe
       const keyContent = key.textContent//saves the key content (used for calcs)
       const displayedNum = display.textContent; //used for displaying key press on calc
       const previousKeyType = calculator.dataset.previousKeyType //Gets the operator/number
+      
       const keyType = getKeyType(key)
       resultString = createResultString(key, displayedNum, calculator.dataset);
       display.textContent = resultString
