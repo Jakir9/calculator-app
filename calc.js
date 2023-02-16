@@ -4,7 +4,6 @@ const calculator = document.querySelector('.calculator');
 const display = document.querySelector('.calculator__display'); //result
 const keys = document.querySelector('.calculator__keys'); //Part where the numbers are added together and shown what is being typed
 
-
 //DISPLAYING KEYPRESSES/RESULTS
    keys.addEventListener('click', e => {
     if (e.target.matches('button')) {
@@ -32,46 +31,40 @@ const keys = document.querySelector('.calculator__keys'); //Part where the numbe
           previousKeyType
         } = state
 
-    if(keyType === 'number') {
-        return calculator.dataset.previousKeyType = 'number';
-    }
-
-    else if(action == 'decimal') {
-        return displayedNum = displayedNum + "."
-    }
-
-    else if (action =='clear'){
-        return displayedNum = 0;
-    }
-
-   if(keyType === 'operator'){
-
-    if(calculator.dataset.previousKeyType = operator) {
-        return keyContent &&
-        operator &&
-        previousKeyType !== 'operator' &&
-        previousKeyType !== 'calculate'
-        ? calc(keyContent, displayedNum, operator)
-        : displayedNum
-    }
-    }
-
-    if (keyType === 'calculate') {
-        calculator.dataset.modValue = firstValue && previousKeyType === 'calculate'
-          ? modValue
-          : displayedNum
-      }
-    
-      if (keyType === 'clear' && key.textContent === 'AC') {
-        calculator.dataset.firstValue = ''
-        calculator.dataset.modValue = ''
-        calculator.dataset.operator = ''
-        calculator.dataset.previousKeyType = ''
-      }
+        if (keyType === 'number') {
+            return displayedNum === '0' ||
+              previousKeyType === 'operator' ||
+              previousKeyType === 'calculate'
+              ? keyContent
+              : displayedNum + keyContent
+          }
+        
+          if (keyType === 'decimal') {
+            if (!displayedNum.includes('.')) return displayedNum + '.'
+            if (previousKeyType === 'operator' || previousKeyType === 'calculate') return '0.'
+            return displayedNum
+          }
+        
+          if (keyType === 'operator') {
+            return firstValue &&
+              operator &&
+              previousKeyType !== 'operator' &&
+              previousKeyType !== 'calculate'
+              ? calculate(firstValue, operator, displayedNum)
+              : displayedNum
+          }
+        
+          if (keyType === 'clear') return 0
+        
+          if (keyType === 'calculate') {
+            return firstValue
+              ? previousKeyType === 'calculate'
+                ? calculate(displayedNum, operator, modValue)
+                : calculate(firstValue, operator, displayedNum)
+              : displayedNum
+          }
 
     };
-
-
 
     const updateVisualState = (key, calculator) => {
         const keyType = getKeyType(key)
@@ -83,9 +76,9 @@ const keys = document.querySelector('.calculator__keys'); //Part where the numbe
           const clearButton = calculator.querySelector('[data-action=clear]')
           clearButton.textContent = 'AC'
         }
-    }
+      }
 
-      const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) => {
+    const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) => {
         const keyType = getKeyType(key)
         const {
           firstValue,
@@ -93,49 +86,36 @@ const keys = document.querySelector('.calculator__keys'); //Part where the numbe
           modValue,
           previousKeyType
         } = calculator.dataset
-
+      
         calculator.dataset.previousKeyType = keyType
-
-        if(keyType === 'operator'){
-
-            if(calculator.dataset.previousKeyType = operator) {
-                return keyContent &&
-                operator &&
-                previousKeyType !== 'operator' &&
-                previousKeyType !== 'calculate'
-                ? calc(keyContent, displayedNum, operator)
-                : displayedNum
-            }
-            }
-        
-            if (keyType === 'calculate') {
-                calculator.dataset.modValue = firstValue && previousKeyType === 'calculate'
-                  ? modValue
-                  : displayedNum
-              }
-            
-              if (keyType === 'clear' && key.textContent === 'AC') {
-                calculator.dataset.firstValue = ''
-                calculator.dataset.modValue = ''
-                calculator.dataset.operator = ''
-                calculator.dataset.previousKeyType = ''
-              }
-        
-};
-
- keys.addEventListener('click',e => {
-    if(e.target.matches('button')) {
-        const key = e.target
-        Array.from(key.parentNode.children) //removes pressed keys
-        .forEach(k => k.classList.remove('is-depressed'))
-    }
- });
-
+      
+        if (keyType === 'operator') {
+          calculator.dataset.operator = key.dataset.action
+          calculator.dataset.firstValue = firstValue &&
+            operator &&
+            previousKeyType !== 'operator' &&
+            previousKeyType !== 'calculate'
+            ? calculatedValue
+            : displayedNum
+        }
+      
+        if (keyType === 'calculate') {
+          calculator.dataset.modValue = firstValue && previousKeyType === 'calculate'
+            ? modValue
+            : displayedNum
+        }
+      
+        if (keyType === 'clear' && key.textContent === 'AC') {
+          calculator.dataset.firstValue = ''
+          calculator.dataset.modValue = ''
+          calculator.dataset.operator = ''
+          calculator.dataset.previousKeyType = ''
+        }
+      }
 
 // Functions
 
-function calc(num1,num2, operator) {
-
+const calculate = (num1, operator, num2) =>{
     const firstNumber = parseFloat(num1);
     const secondNumber =  parseFloat(num2);
 
@@ -143,15 +123,15 @@ function calc(num1,num2, operator) {
         return firstNumber + secondNumber;
     }
    
-   else if (operator === 'subtract'){
+   if (operator === 'subtract'){
         return firstNumber - secondNumber;
     }
 
-    else if (operator === 'multiply'){
+    if (operator === 'multiply'){
         return firstNumber * secondNumber;
 
     }
-    else if (operator === 'divide'){
+    if (operator === 'divide'){
         return firstNumber / secondNumber;
 
     }
@@ -165,20 +145,16 @@ function calc(num1,num2, operator) {
 
 function getKeyType(key){
 
-    if(key === 'add' ||
-    key === 'subtract' ||
-    key === 'multiply' ||
-    key === 'divide'){
-        key.classList.add('is-depressed') //tells us when an operator has been pressed down 
-       return calculator.dataset.previousKeyType = 'operator';
-    }
-    else if (key === 'calculate'){
-        return calculator.dataset.previousKeyType = 'calculate';
-    }
-        else {
-            return 'number';
-        }
+    const { action } = key.dataset
+    if(!action) return 'number';
 
+    if(action === 'add' ||
+    action === 'subtract' ||
+    action === 'multiply' ||
+    action === 'divide'){
+       return 'operator';
+    }
+        return action;
 }
 
 
