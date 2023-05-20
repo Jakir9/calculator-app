@@ -1,26 +1,93 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: large;
-    display: block;
-    align-items:center ;
-    justify-content: center;
-    flex-direction: column;
-    margin: auto;
-    text-align: center;
+body {
+  background-color: #000;
 }
 
-.calculator__keys { 
-    display: grid; 
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .calculator__display{
-    display: grid;
-    color:white;
-    background-color:black;
-  }
+.calculator {
+  width: 300px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .calculator__keys{
-    display: grid;
-    color:white;
-    background-color:black;
-  }
+.calculator__display {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: right;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.calculator__keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+.calculator__keys button {
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
+  padding: 15px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.calculator__keys button.key--operator {
+  background-color: #ff8f00;
+  color: #fff;
+}
+
+.calculator__keys button.key--equal {
+  background-color: #ffca28;
+  color: #000;
+}
+
+.calculator__keys button:hover {
+  background-color: #d5d5d5;
+}
+
+.calculator__keys button.is-depressed {
+  background-color: #ffca28;
+  color: #000;
+}
+
+.calculator__keys button[data-action="clear"] {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.calculator__keys button[data-action="decimal"] {
+  font-size: 24px;
+}
+
+.calculator__keys button[data-number="0"] {
+  grid-column: span 2;
+}
+
+.calculator::before {
+  display: block;
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.firstName{
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
